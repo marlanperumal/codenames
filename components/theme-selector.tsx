@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function ThemeSelector() {
+export function ThemeSelector() {
   const { setTheme } = useTheme();
 
   return (
