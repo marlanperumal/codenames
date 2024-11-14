@@ -12,7 +12,7 @@ const colorVariants = {
     "bg-tile-death-background text-tile-death-background hover:text-tile-death-foreground",
 };
 
-type WordVariant = "blue" | "red" | "unknown" | "neutral" | "death";
+export type WordVariant = "blue" | "red" | "unknown" | "neutral" | "death";
 
 const Tile = React.forwardRef<
   HTMLDivElement,

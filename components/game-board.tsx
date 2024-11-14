@@ -1,7 +1,7 @@
 "use client";
 
 import { useImmer } from "use-immer";
-import { Tile, TileBoard, type WordVariant } from "./ui/tile";
+import { Tile, TileBoard, WordVariant } from "./ui/tile";
 
 function generateWordArray(wordCounts: {
   [key: string]: number;
