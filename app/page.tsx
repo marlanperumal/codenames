@@ -12,6 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { GameBoard } from "@/components/game-board";
 import { AppSidebar } from "@/components/app-sidebar";
 
 export default function Home() {
@@ -34,16 +35,7 @@ export default function Home() {
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <div className="grid grid-cols-5 gap-4 p-4 flex-grow">
-          {Array.from({ length: 25 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-center border border-gray-300 p-4 rounded-lg"
-            >
-              Card {index + 1}
-            </div>
-          ))}
-        </div>
+        <GameBoard />
       </SidebarInset>
     </SidebarProvider>
   );
