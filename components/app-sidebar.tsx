@@ -1,5 +1,4 @@
 import {
-  Egg,
   Home,
   CirclePlus,
   CircleCheck,
@@ -21,54 +20,57 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { ThemeSelector } from "./theme-selector";
+} from "@/components/ui/dropdown-menu";
+import { ThemeSelector } from "@/components/theme-selector";
+import { Logo } from "@/components/logo";
+import Link from "next/link";
 
 export function AppSidebar() {
   return (
     <Sidebar variant="inset">
       <SidebarHeader>
-        <div className="flex items-center">
-          <div className="flex aspect-square size-8 rounded-lg items-center justify-center bg-sidebar-primary text-sidebar-primary-foreground">
-            <Egg className="size-4" />
-          </div>
-          <div className="ml-2">
-            <span className="text-2xl">codenames</span>
-          </div>
-        </div>
+        <Logo />
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
-                <Home />
-                <span>Home</span>
-              </a>
+              <Link href="/">
+                <>
+                  <Home />
+                  <span>Home</span>
+                </>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
-                <CirclePlus />
-                <span>New Game</span>
-              </a>
+              <Link href="#">
+                <>
+                  <CirclePlus />
+                  <span>New Game</span>
+                </>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
-                <CircleCheck />
-                <span>End Game</span>
-              </a>
+              <Link href="#">
+                <>
+                  <CircleCheck />
+                  <span>End Game</span>
+                </>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
-                <Glasses />
-                <span>Become Spymaster</span>
-              </a>
+              <Link href="#">
+                <>
+                  <Glasses />
+                  <span>Become Spymaster</span>
+                </>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
