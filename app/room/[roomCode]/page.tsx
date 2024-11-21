@@ -15,7 +15,12 @@ import {
 import { GameBoard } from "@/components/game-board";
 import { AppSidebar } from "@/components/app-sidebar";
 
-export default function Room() {
+export default async function Room({
+  params,
+}: {
+  params: { roomCode: string };
+}) {
+  const { roomCode } = await params;
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -26,11 +31,11 @@ export default function Room() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Room</BreadcrumbLink>
+                <BreadcrumbLink href="/">Room</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>X83HD8</BreadcrumbPage>
+                <BreadcrumbPage>{roomCode}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

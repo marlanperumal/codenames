@@ -22,12 +22,20 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-  roomCode: z.optional(z.string()),
+  roomCode: z
+    .union([
+      z.string().length(6, {
+        message: "Room Code must be exactly 6 characters.",
+      }),
+      z.string().length(0),
+    ])
+    .transform((code) => code.toUpperCase())
+    .optional(),
 });
 
 export function HomeForm() {
   const router = useRouter();
-  const { name, setName } = useUserContext();
+  const { name, roomCode, setName, setRoomCode } = useUserContext();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,10 +48,24 @@ export function HomeForm() {
     form.setValue("name", name);
   }, [form, name]);
 
+  useEffect(() => {
+    form.setValue("roomCode", roomCode);
+  }, [form, roomCode]);
+
   function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
     setName(data.name);
-    router.push("/room");
+    if (data.roomCode) {
+      setRoomCode(data.roomCode);
+      router.push(`/room/${data.roomCode}`);
+    } else {
+      const newRoomCode = Math.random()
+        .toString(36)
+        .substring(2, 8)
+        .toUpperCase();
+      setRoomCode(newRoomCode);
+      router.push(`/room/${newRoomCode}`);
+    }
   }
 
   return (

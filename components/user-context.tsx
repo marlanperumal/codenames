@@ -1,10 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+} from "react";
 
 type UserContext = {
   name: string;
-  setName: (name: string) => void;
+  roomCode: string;
+  setName: Dispatch<string>;
+  setRoomCode: Dispatch<string>;
 };
 
 const UserContext = createContext<UserContext | null>(null);
@@ -13,6 +21,7 @@ import { ReactNode } from "react";
 
 export function UserContextProvider({ children }: { children: ReactNode }) {
   const [name, setName] = useState("");
+  const [roomCode, setRoomCode] = useState("");
 
   useEffect(() => {
     const name = window.localStorage.getItem("name");
@@ -28,7 +37,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   }, [name]);
 
   return (
-    <UserContext.Provider value={{ name, setName }}>
+    <UserContext.Provider value={{ name, roomCode, setName, setRoomCode }}>
       {children}
     </UserContext.Provider>
   );
