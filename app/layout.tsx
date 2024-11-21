@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { UserContextProvider } from "../components/user-context";
 
 export const metadata: Metadata = {
   title: "Codenames",
@@ -22,7 +23,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main>{children}</main>
+          <UserContextProvider>
+            <main>{children}</main>
+          </UserContextProvider>
         </ThemeProvider>
       </body>
     </html>

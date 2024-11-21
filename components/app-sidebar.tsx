@@ -1,11 +1,4 @@
-import {
-  Home,
-  CirclePlus,
-  CircleCheck,
-  Glasses,
-  ChevronUp,
-  User,
-} from "lucide-react";
+import { Home, CirclePlus, CircleCheck, Glasses } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -15,14 +8,10 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { ThemeSelector } from "@/components/theme-selector";
 import { Logo } from "@/components/logo";
+import { UserMenu } from "@/components/user-menu";
 import Link from "next/link";
 
 export function AppSidebar() {
@@ -77,29 +66,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center justify-stretch">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton>
-                    <User /> Username
-                    <ChevronUp className="ml-auto" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  side="top"
-                  className="w-[--radix-popper-anchor-width]"
-                >
-                  <DropdownMenuItem>
-                    <span>Change Name</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <span>Change Team</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
+          <UserMenu />
           <div className="flex items-center justify-end ml-2">
             <ThemeSelector />
           </div>

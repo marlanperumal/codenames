@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ThemeSelector } from "@/components/theme-selector";
+import { useUserContext } from "../components/user-context";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -25,16 +27,22 @@ const formSchema = z.object({
 
 export function HomeForm() {
   const router = useRouter();
+  const { name, setName } = useUserContext();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: name,
       roomCode: "",
     },
   });
 
+  useEffect(() => {
+    form.setValue("name", name);
+  }, [form, name]);
+
   function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
+    setName(data.name);
     router.push("/room");
   }
 
