@@ -111,7 +111,7 @@ export type Database = {
           game_id: number
           id: number
           is_selected: boolean | null
-          position: number | null
+          position: number
           team: string
           word_id: number
         }
@@ -120,7 +120,7 @@ export type Database = {
           game_id: number
           id?: number
           is_selected?: boolean | null
-          position?: number | null
+          position: number
           team: string
           word_id: number
         }
@@ -129,7 +129,7 @@ export type Database = {
           game_id?: number
           id?: number
           is_selected?: boolean | null
-          position?: number | null
+          position?: number
           team?: string
           word_id?: number
         }

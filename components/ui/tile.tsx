@@ -1,6 +1,7 @@
 import React from "react";
 
 import { cn } from "@/lib/utils";
+import { flipTile } from "@/app/actions";
 
 const colorVariants = {
   unknown: "bg-tile-unknown-background text-tile-unknown-foreground ",
@@ -17,13 +18,21 @@ export type WordVariant = "blue" | "red" | "unknown" | "neutral" | "death";
 const Tile = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
+    tileId: number;
     variant?: WordVariant;
     selected?: boolean;
     word?: string;
   }
 >(
   (
-    { className, variant = "unknown", selected = false, word, ...props },
+    {
+      className,
+      tileId,
+      variant = "unknown",
+      selected = false,
+      word,
+      ...props
+    },
     ref
   ) => (
     <div
@@ -35,6 +44,9 @@ const Tile = React.forwardRef<
         className
       )}
       aria-label={word}
+      onClick={async () => {
+        await flipTile(tileId);
+      }}
       {...props}
     >
       <span>{word}</span>

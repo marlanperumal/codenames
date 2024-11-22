@@ -38,7 +38,7 @@ export default async function Room({
       `id, name, current_room_id, room (
         id, code, current_game:game!room_current_game_id_fkey (
           id, code, is_complete, tiles:tile (
-            position, team, is_selected, word (
+            id, position, team, is_selected, word (
               word 
             ) 
           )
@@ -48,24 +48,10 @@ export default async function Room({
     .eq("id", user?.id)
     .single();
 
-  // console.log(player);
-
-  // if (player?.room?.code !== roomCode) {
-  //   const { data: room } = await supabase
-  //     .from("room")
-  //     .select()
-  //     .eq("code", roomCode)
-  //     .single();
-  //   ({ data: player } = await supabase
-  //     .from("player")
-  //     .update({
-  //       id: user.id,
-  //       current_room_id: room?.id,
-  //     })
-  //     .eq("id", user.id)
-  //     .select()
-  //     .single());
-  // }
+  const orderedTiles =
+    player?.room?.current_game?.tiles?.sort(
+      (a, b) => a.position - b.position
+    ) || [];
 
   return (
     <SidebarProvider>
@@ -96,7 +82,7 @@ export default async function Room({
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <GameBoard tiles={player?.room?.current_game?.tiles || []} />
+        <GameBoard tiles={orderedTiles} />
       </SidebarInset>
     </SidebarProvider>
   );

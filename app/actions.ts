@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -68,4 +69,17 @@ export async function launchFromHome(formData: FormData) {
   });
 
   return redirect(`/room/${newRoomCode}`);
+}
+
+export const flipTile = async (tileId: number) => {
+  const supabase = await createClient();
+
+  await supabase
+    .from("tile")
+    .update({
+      is_selected: true,
+    })
+    .eq("id", tileId)
+
+  revalidatePath(`/room/[roomCode]`, 'page');
 }

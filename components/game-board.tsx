@@ -6,6 +6,7 @@ export function GameBoard({
   tiles,
 }: {
   tiles: {
+    id: number;
     position: number | null;
     team: string;
     is_selected: boolean | null;
@@ -16,7 +17,8 @@ export function GameBoard({
     <TileBoard>
       {tiles.map((tile) => (
         <Tile
-          key={tile.word?.word}
+          tileId={tile.id}
+          key={tile.id}
           variant={tile.team as WordVariant}
           word={tile.word?.word}
           selected={tile.is_selected || false}
