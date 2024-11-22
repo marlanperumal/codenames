@@ -1,9 +1,11 @@
 "use client";
 
-import { Tile, TileBoard, WordVariant } from "./ui/tile";
+import { Tile, TileBoard, WordVariant, TeamVariant } from "./ui/tile";
 
 export function GameBoard({
   tiles,
+  team = "neutral",
+  isSpymaster = false,
 }: {
   tiles: {
     id: number;
@@ -12,9 +14,11 @@ export function GameBoard({
     is_selected: boolean | null;
     word: { word: string } | null;
   }[];
+  team: TeamVariant;
+  isSpymaster: boolean;
 }) {
   return (
-    <TileBoard>
+    <TileBoard team={team}>
       {tiles.map((tile) => (
         <Tile
           tileId={tile.id}
@@ -22,6 +26,7 @@ export function GameBoard({
           variant={tile.team as WordVariant}
           word={tile.word?.word}
           selected={tile.is_selected || false}
+          isSpymaster={isSpymaster}
         />
       ))}
     </TileBoard>

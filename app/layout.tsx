@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import "./globals.css";
+import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { UserContextProvider } from "../components/user-context";
 

@@ -71,6 +71,15 @@ export default {
           "blue-foreground": "hsl(var(--tile-blue-foreground))",
           "death-background": "hsl(var(--tile-death-background))",
           "death-foreground": "hsl(var(--tile-death-foreground))",
+          border: {
+            DEFAULT: "hsl(var(--tile-border))",
+            selected: "hsl(var(--tile-border-selected))",
+          }
+        },
+        gameBoard: {
+          "neutral-background": "hsl(var(--gameBoard-neutral-background))",
+          "red-background": "hsl(var(--gameBoard-red-background))",
+          "blue-background": "hsl(var(--gameBoard-blue-background))",
         },
       },
       borderRadius: {

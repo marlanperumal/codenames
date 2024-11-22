@@ -15,6 +15,7 @@ import {
 import { GameBoard } from "@/components/game-board";
 import { AppSidebar } from "@/components/app-sidebar";
 import { createClient } from "@/utils/supabase/server";
+import { TeamVariant } from "@/components/ui/tile";
 
 export default async function Room({
   params,
@@ -35,7 +36,7 @@ export default async function Room({
   const { data: player } = await supabase
     .from("player")
     .select(
-      `id, name, current_room_id, room (
+      `id, name, current_room_id, team, is_spymaster, room (
         id, code, current_game:game!room_current_game_id_fkey (
           id, code, is_complete, tiles:tile (
             id, position, team, is_selected, word (
@@ -82,7 +83,11 @@ export default async function Room({
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <GameBoard tiles={orderedTiles} />
+        <GameBoard
+          tiles={orderedTiles}
+          team={(player?.team as TeamVariant) || "neutral"}
+          isSpymaster={player?.is_spymaster || false}
+        />
       </SidebarInset>
     </SidebarProvider>
   );

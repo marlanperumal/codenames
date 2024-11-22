@@ -51,6 +51,11 @@ body {
     --tile-red-foreground: 60 9.1% 97.8%;
     --tile-blue-foreground: 60 9.1% 97.8%;
     --tile-death-foreground: 60 9.1% 97.8%;
+    --tile-border: 0 0% 98%;
+    --tile-border-selected: 240 10% 3.9%;
+    --gameBoard-neutral-background: 240 5.9% 90%;
+    --gameBoard-red-background: 0 96.3% 89.4%;
+    --gameBoard-blue-background: 213.3 96.9% 87.3%;
   }
 
   .dark {
@@ -96,6 +101,11 @@ body {
     --tile-red-foreground: 60 9.1% 97.8%;
     --tile-blue-foreground: 60 9.1% 97.8%;
     --tile-death-foreground: 60 9.1% 97.8%;
+    --tile-border: 0 0% 98%;
+    --tile-border-selected: 240 10% 3.9%;
+    --gameBoard-neutral-background: 240 3.7% 15.9%;
+    --gameBoard-red-background: 0 74.7% 15.5%;
+    --gameBoard-blue-background: 226.2 57% 21%;
   }
 }
 
