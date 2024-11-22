@@ -1,12 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,8 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ThemeSelector } from "@/components/theme-selector";
-import { useUserContext } from "../components/user-context";
-import { useEffect } from "react";
+import { launchFromHome } from "./actions";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -33,44 +32,24 @@ const formSchema = z.object({
     .optional(),
 });
 
-export function HomeForm() {
-  const router = useRouter();
-  const { name, roomCode, setName, setRoomCode } = useUserContext();
+export function HomeForm({
+  name,
+  roomCode,
+}: {
+  name: string | null;
+  roomCode: string | null;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: name,
-      roomCode: "",
+      name: name || "",
+      roomCode: roomCode || "",
     },
   });
 
-  useEffect(() => {
-    form.setValue("name", name);
-  }, [form, name]);
-
-  useEffect(() => {
-    form.setValue("roomCode", roomCode);
-  }, [form, roomCode]);
-
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
-    setName(data.name);
-    if (data.roomCode) {
-      setRoomCode(data.roomCode);
-      router.push(`/room/${data.roomCode}`);
-    } else {
-      const newRoomCode = Math.random()
-        .toString(36)
-        .substring(2, 8)
-        .toUpperCase();
-      setRoomCode(newRoomCode);
-      router.push(`/room/${newRoomCode}`);
-    }
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form action={launchFromHome} className="space-y-8">
         <FormField
           control={form.control}
           name="name"
@@ -91,12 +70,11 @@ export function HomeForm() {
             <FormItem>
               <FormLabel>Room Code</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  type="text"
-                  placeholder="Enter your Room Code"
-                />
+                <Input {...field} type="text" className="uppercase" />
               </FormControl>
+              <FormDescription>
+                Leave this empty to start a new room
+              </FormDescription>
               <FormMessage>
                 {form.formState.errors.roomCode?.message}
               </FormMessage>
@@ -109,6 +87,7 @@ export function HomeForm() {
             <ThemeSelector />
           </div>
         </div>
+        <input hidden {...form.register("roomCode")} />
       </form>
     </Form>
   );

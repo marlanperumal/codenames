@@ -10,8 +10,10 @@ import {
 
 type UserContext = {
   name: string;
+  playerId: string;
   roomCode: string;
   setName: Dispatch<string>;
+  setPlayerId: Dispatch<string>;
   setRoomCode: Dispatch<string>;
 };
 
@@ -21,6 +23,7 @@ import { ReactNode } from "react";
 
 export function UserContextProvider({ children }: { children: ReactNode }) {
   const [name, setName] = useState("");
+  const [playerId, setPlayerId] = useState("");
   const [roomCode, setRoomCode] = useState("");
 
   useEffect(() => {
@@ -36,8 +39,23 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
     }
   }, [name]);
 
+  useEffect(() => {
+    const playerId = window.localStorage.getItem("playerId");
+    if (playerId) {
+      setPlayerId(playerId);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (playerId) {
+      window.localStorage.setItem("playerId", playerId);
+    }
+  }, [playerId]);
+
   return (
-    <UserContext.Provider value={{ name, roomCode, setName, setRoomCode }}>
+    <UserContext.Provider
+      value={{ name, playerId, roomCode, setName, setPlayerId, setRoomCode }}
+    >
       {children}
     </UserContext.Provider>
   );
