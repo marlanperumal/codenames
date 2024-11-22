@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useOptimistic } from "react";
 
 import { cn } from "@/lib/utils";
 import { flipTile } from "@/app/actions";
@@ -16,8 +18,8 @@ const colorVariants = {
 export type WordVariant = "blue" | "red" | "unknown" | "neutral" | "death";
 
 const Tile = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"div"> & {
+  HTMLButtonElement,
+  React.ComponentProps<"button"> & {
     tileId: number;
     variant?: WordVariant;
     selected?: boolean;
@@ -34,24 +36,35 @@ const Tile = React.forwardRef<
       ...props
     },
     ref
-  ) => (
-    <div
-      ref={ref}
-      className={cn(
-        `flex items-center justify-center rounded-xl p-1 lg:p-4 border shadow-md uppercase cursor-pointer transition-all ease-in-out duration-500 text-xs lg:text-lg ${
-          selected ? colorVariants[variant] : colorVariants["unknown"]
-        }`,
-        className
-      )}
-      aria-label={word}
-      onClick={async () => {
-        await flipTile(tileId);
-      }}
-      {...props}
-    >
-      <span>{word}</span>
-    </div>
-  )
+  ) => {
+    const [optimisticSelected, setOptimisticSelected] =
+      useOptimistic<boolean>(selected);
+    const flipTileHandler = async () => {
+      setOptimisticSelected((prev) => !prev);
+      await flipTile(tileId);
+    };
+    return (
+      <form action={flipTileHandler} className="flex">
+        <button
+          role="button"
+          ref={ref}
+          className={cn(
+            `flex w-full items-center justify-center rounded-xl p-1 lg:p-4 border shadow-md uppercase cursor-pointer transition-all ease-in-out duration-500 text-xs lg:text-lg ${
+              optimisticSelected
+                ? colorVariants[variant]
+                : colorVariants["unknown"]
+            }`,
+            className
+          )}
+          disabled={optimisticSelected}
+          aria-label={word}
+          {...props}
+        >
+          <span>{word}</span>
+        </button>
+      </form>
+    );
+  }
 );
 Tile.displayName = "Tile";
 
