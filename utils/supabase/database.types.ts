@@ -80,19 +80,30 @@ export type Database = {
         Row: {
           code: string
           created_at: string
+          current_game_id: number | null
           id: number
         }
         Insert: {
           code: string
           created_at?: string
+          current_game_id?: number | null
           id?: number
         }
         Update: {
           code?: string
           created_at?: string
+          current_game_id?: number | null
           id?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "room_current_game_id_fkey"
+            columns: ["current_game_id"]
+            isOneToOne: false
+            referencedRelation: "game"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tile: {
         Row: {

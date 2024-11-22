@@ -19,7 +19,7 @@ import { createClient } from "@/utils/supabase/server";
 export default async function Room({
   params,
 }: {
-  params: { roomCode: string };
+  params: Promise<{ roomCode: string }>;
 }) {
   const { roomCode } = await params;
   const supabase = await createClient();
@@ -32,33 +32,40 @@ export default async function Room({
     return;
   }
 
-  let { data: player } = await supabase
+  const { data: player } = await supabase
     .from("player")
     .select(
-      `id, name, current_room_id, room (id, code, current_game:game!room_current_game_id_fkey (id, code, is_complete, tiles:tile ( position, team, is_selected, word ( word ) )))`
+      `id, name, current_room_id, room (
+        id, code, current_game:game!room_current_game_id_fkey (
+          id, code, is_complete, tiles:tile (
+            position, team, is_selected, word (
+              word 
+            ) 
+          )
+        )
+      )`
     )
-    // .order("position", { referencedTable: "tiles" })
     .eq("id", user?.id)
     .single();
 
-  console.log(player);
+  // console.log(player);
 
-  if (player?.room?.code !== roomCode) {
-    const { data: room } = await supabase
-      .from("room")
-      .select()
-      .eq("code", roomCode)
-      .single();
-    ({ data: player } = await supabase
-      .from("player")
-      .update({
-        id: user.id,
-        current_room_id: room?.id,
-      })
-      .eq("id", user.id)
-      .select()
-      .single());
-  }
+  // if (player?.room?.code !== roomCode) {
+  //   const { data: room } = await supabase
+  //     .from("room")
+  //     .select()
+  //     .eq("code", roomCode)
+  //     .single();
+  //   ({ data: player } = await supabase
+  //     .from("player")
+  //     .update({
+  //       id: user.id,
+  //       current_room_id: room?.id,
+  //     })
+  //     .eq("id", user.id)
+  //     .select()
+  //     .single());
+  // }
 
   return (
     <SidebarProvider>
@@ -89,7 +96,7 @@ export default async function Room({
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <GameBoard tiles={player?.room?.current_game?.tiles} />
+        <GameBoard tiles={player?.room?.current_game?.tiles || []} />
       </SidebarInset>
     </SidebarProvider>
   );
