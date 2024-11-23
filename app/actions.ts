@@ -84,7 +84,6 @@ export const flipTile = async (tileId: number) => {
   revalidatePath(`/room/[roomCode]`, 'page');
 }
 
-
 export const changeTeam = async (team: string) => {
   const supabase = await createClient();
   const {
@@ -100,6 +99,27 @@ export const changeTeam = async (team: string) => {
     .from("player")
     .update({
       team,
+    })
+    .eq("id", user.id);
+
+  revalidatePath(`/room/[roomCode]`, 'page');
+}
+
+export const toggleSpymaster = async (isSpymaster: boolean) => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    await supabase.auth.signInAnonymously();
+    return;
+  }
+
+  await supabase
+    .from("player")
+    .update({
+      is_spymaster: isSpymaster,
     })
     .eq("id", user.id);
 

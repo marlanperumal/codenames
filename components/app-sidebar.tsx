@@ -17,7 +17,7 @@ import { ThemeSelector } from "@/components/theme-selector";
 import { Logo } from "@/components/logo";
 import { UserMenu } from "@/components/user-menu";
 import Link from "next/link";
-import { changeTeam } from "@/app/actions";
+import { changeTeam, toggleSpymaster } from "@/app/actions";
 import { cn } from "@/lib/utils";
 
 const TeamButton = React.forwardRef<
@@ -46,7 +46,10 @@ const TeamButton = React.forwardRef<
 });
 TeamButton.displayName = "TeamButton";
 
-export function AppSidebar() {
+export function AppSidebar({ isSpymaster }: { isSpymaster: boolean }) {
+  const toggleSpymasterHandler = async () => {
+    await toggleSpymaster(!isSpymaster);
+  };
   return (
     <Sidebar variant="inset">
       <SidebarHeader>
@@ -86,12 +89,12 @@ export function AppSidebar() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="#">
+              <button onClick={toggleSpymasterHandler}>
                 <>
                   <Glasses />
                   <span>Become Spymaster</span>
                 </>
-              </Link>
+              </button>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
