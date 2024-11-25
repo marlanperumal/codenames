@@ -68,6 +68,7 @@ export default async function Room({
   return (
     <SidebarProvider>
       <AppSidebar
+        name={player?.name || "Player"}
         isSpymaster={player?.is_spymaster || false}
         tileCounts={tileCounts}
       />

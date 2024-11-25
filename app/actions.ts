@@ -125,3 +125,24 @@ export const toggleSpymaster = async (isSpymaster: boolean) => {
 
   revalidatePath(`/room/[roomCode]`, 'page');
 }
+
+export const changeName = async (name: string) => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    await supabase.auth.signInAnonymously();
+    return;
+  }
+
+  await supabase
+    .from("player")
+    .update({
+      name,
+    })
+    .eq("id", user.id);
+
+  revalidatePath(`/room/[roomCode]`, 'page');
+}
