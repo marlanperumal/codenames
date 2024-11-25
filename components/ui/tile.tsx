@@ -40,6 +40,7 @@ const Tile = React.forwardRef<
     selected?: boolean;
     isSpymaster?: boolean;
     word?: string;
+    isComplete?: boolean;
   }
 >(
   (
@@ -50,6 +51,7 @@ const Tile = React.forwardRef<
       selected = false,
       isSpymaster = false,
       word,
+      isComplete = false,
       ...props
     },
     ref
@@ -66,7 +68,9 @@ const Tile = React.forwardRef<
           ref={ref}
           className={cn(
             `flex w-full items-center justify-center rounded-xl p-1 lg:p-4 border-4 shadow-md uppercase cursor-pointer transition-all ease-in-out duration-500 text-xs lg:text-lg ${
-              optimisticSelected
+              isComplete
+                ? spyMasterTileColorVariants[variant]
+                : optimisticSelected
                 ? tileColorVariants[variant]
                 : isSpymaster
                 ? spyMasterTileColorVariants[variant]

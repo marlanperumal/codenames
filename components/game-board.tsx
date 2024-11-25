@@ -6,6 +6,7 @@ export function GameBoard({
   tiles,
   team = "neutral",
   isSpymaster = false,
+  isComplete = false,
 }: {
   tiles: {
     id: number;
@@ -16,6 +17,7 @@ export function GameBoard({
   }[];
   team: TeamVariant;
   isSpymaster: boolean;
+  isComplete: boolean;
 }) {
   return (
     <TileBoard team={team}>
@@ -26,6 +28,7 @@ export function GameBoard({
           variant={tile.team as WordVariant}
           word={tile.word?.word}
           selected={tile.is_selected || false}
+          isComplete={isComplete}
           isSpymaster={isSpymaster}
         />
       ))}

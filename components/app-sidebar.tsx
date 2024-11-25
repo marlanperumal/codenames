@@ -17,7 +17,7 @@ import { ThemeSelector } from "@/components/theme-selector";
 import { Logo } from "@/components/logo";
 import { UserMenu } from "@/components/user-menu";
 import Link from "next/link";
-import { changeTeam, toggleSpymaster } from "@/app/actions";
+import { changeTeam, toggleSpymaster, completeGame } from "@/app/actions";
 import { cn } from "@/lib/utils";
 
 const TeamButton = React.forwardRef<
@@ -51,13 +51,18 @@ export function AppSidebar({
   name,
   isSpymaster,
   tileCounts,
+  gameId,
 }: {
   name: string;
   isSpymaster: boolean;
   tileCounts: Record<string, number>;
+  gameId: number;
 }) {
   const toggleSpymasterHandler = async () => {
     await toggleSpymaster(!isSpymaster);
+  };
+  const completeGameHandler = async () => {
+    await completeGame(gameId);
   };
   return (
     <Sidebar variant="inset">
@@ -88,12 +93,12 @@ export function AppSidebar({
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="#">
+              <button onClick={completeGameHandler}>
                 <>
                   <CircleCheck />
                   <span>End Game</span>
                 </>
-              </Link>
+              </button>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>

@@ -71,6 +71,7 @@ export default async function Room({
         name={player?.name || "Player"}
         isSpymaster={player?.is_spymaster || false}
         tileCounts={tileCounts}
+        gameId={player?.room?.current_game?.id || 0}
       />
       <SidebarInset>
         <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
@@ -102,6 +103,7 @@ export default async function Room({
           tiles={orderedTiles}
           team={(player?.team as TeamVariant) || "neutral"}
           isSpymaster={player?.is_spymaster || false}
+          isComplete={player?.room?.current_game?.is_complete || false}
         />
       </SidebarInset>
     </SidebarProvider>

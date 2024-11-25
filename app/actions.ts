@@ -146,3 +146,16 @@ export const changeName = async (name: string) => {
 
   revalidatePath(`/room/[roomCode]`, 'page');
 }
+
+export const completeGame = async (gameId: number) => {
+  const supabase = await createClient();
+
+  await supabase
+    .from("game")
+    .update({
+      is_complete: true,
+    })
+    .eq("id", gameId);
+
+  revalidatePath(`/room/[roomCode]`, 'page');
+}
