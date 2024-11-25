@@ -24,8 +24,9 @@ const TeamButton = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<"button"> & {
     team: string;
+    remaining: number;
   }
->(({ className, team, ...props }, ref) => {
+>(({ className, team, remaining, ...props }, ref) => {
   const changeTeamHandler = async () => {
     await changeTeam(team);
   };
@@ -40,13 +41,19 @@ const TeamButton = React.forwardRef<
       aria-label={team}
       {...props}
     >
-      {team}
+      {remaining}
     </button>
   );
 });
 TeamButton.displayName = "TeamButton";
 
-export function AppSidebar({ isSpymaster }: { isSpymaster: boolean }) {
+export function AppSidebar({
+  isSpymaster,
+  tileCounts,
+}: {
+  isSpymaster: boolean;
+  tileCounts: Record<string, number>;
+}) {
   const toggleSpymasterHandler = async () => {
     await toggleSpymaster(!isSpymaster);
   };
@@ -99,9 +106,9 @@ export function AppSidebar({ isSpymaster }: { isSpymaster: boolean }) {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <form className="flex items-center justify-items gap-2">
-              <TeamButton team="red" />
-              <TeamButton team="neutral" />
-              <TeamButton team="blue" />
+              <TeamButton team="red" remaining={tileCounts.red} />
+              <TeamButton team="neutral" remaining={tileCounts.neutral} />
+              <TeamButton team="blue" remaining={tileCounts.blue} />
             </form>
           </SidebarMenuItem>
         </SidebarMenu>

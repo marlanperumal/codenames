@@ -54,9 +54,23 @@ export default async function Room({
       (a, b) => a.position - b.position
     ) || [];
 
+  const tileCounts = {
+    red: orderedTiles.filter((tile) => tile.team === "red" && !tile.is_selected)
+      .length,
+    neutral: orderedTiles.filter(
+      (tile) => tile.team === "neutral" && !tile.is_selected
+    ).length,
+    blue: orderedTiles.filter(
+      (tile) => tile.team === "blue" && !tile.is_selected
+    ).length,
+  };
+
   return (
     <SidebarProvider>
-      <AppSidebar isSpymaster={player?.is_spymaster || false} />
+      <AppSidebar
+        isSpymaster={player?.is_spymaster || false}
+        tileCounts={tileCounts}
+      />
       <SidebarInset>
         <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
