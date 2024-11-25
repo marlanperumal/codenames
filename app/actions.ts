@@ -159,3 +159,23 @@ export const completeGame = async (gameId: number) => {
 
   revalidatePath(`/room/[roomCode]`, 'page');
 }
+
+export const newGame = async (roomCode: string) => {
+  const supabase = await createClient();
+
+  const { data: room } = await supabase.from("room").select().eq("code", roomCode).single();
+
+  if (!room) {
+    redirect("/");
+  }
+
+  const { data: game } = await supabase.from("game").insert({room_id: room.id}).select().single();
+
+  if (!game) {
+    redirect("/");
+  }
+
+  await supabase.from("room").update({current_game_id: game.id}).eq("id", room.id);
+
+  revalidatePath(`/room/[roomCode]`, 'page');
+}

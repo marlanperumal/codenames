@@ -72,6 +72,7 @@ export default async function Room({
         isSpymaster={player?.is_spymaster || false}
         tileCounts={tileCounts}
         gameId={player?.room?.current_game?.id || 0}
+        roomCode={roomCode}
       />
       <SidebarInset>
         <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
