@@ -24,7 +24,6 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -49,9 +48,10 @@ export function UserMenu({ name }: { name: string }) {
 
   const changeNameHandler = async () => {
     const name = form.getValues("name");
+    console.log(name);
     setOptimisticName(name);
-    setOpen(false);
     await changeName(name);
+    setOpen(false);
   };
   return (
     <SidebarMenu>
@@ -103,9 +103,7 @@ export function UserMenu({ name }: { name: string }) {
                   />
                 </div>
                 <DialogFooter>
-                  <DialogClose asChild>
-                    <Button>Save</Button>
-                  </DialogClose>
+                  <Button>Save</Button>
                 </DialogFooter>
               </form>
             </Form>

@@ -39,7 +39,7 @@ const TeamButton = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        `flex grow items-center justify-center bg-tile-${team}-background text-tile-${team}-foreground p-2 rounded-lg shadow-md w-10`,
+        `flex grow items-center justify-center bg-tile-${team}-background text-tile-${team}-foreground p-2 rounded-lg shadow-md`,
         className
       )}
       formAction={changeTeamHandler}
@@ -75,7 +75,7 @@ export function AppSidebar({
     await newGame(roomCode);
   };
   return (
-    <Sidebar variant="inset">
+    <Sidebar>
       <SidebarHeader>
         <Logo />
       </SidebarHeader>
@@ -122,7 +122,7 @@ export function AppSidebar({
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <form className="flex items-center justify-items gap-2">
+            <form className="flex items-center justify-items p-2 gap-2">
               <TeamButton team="red" remaining={tileCounts.red} />
               <TeamButton team="neutral" remaining={tileCounts.neutral} />
               <TeamButton team="blue" remaining={tileCounts.blue} />

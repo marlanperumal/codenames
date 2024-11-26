@@ -16,6 +16,7 @@ import { GameBoard } from "@/components/game-board";
 import { AppSidebar } from "@/components/app-sidebar";
 import { createClient } from "@/utils/supabase/server";
 import { TeamVariant } from "@/components/ui/tile";
+import { LogSidebar } from "@/components/log-sidebar";
 
 export default async function Room({
   params,
@@ -107,6 +108,11 @@ export default async function Room({
           isComplete={player?.room?.current_game?.is_complete || false}
         />
       </SidebarInset>
+      <LogSidebar
+        roomCode={roomCode}
+        name={player?.name || "Player"}
+        team={player?.team || "neutral"}
+      />
     </SidebarProvider>
   );
 }
