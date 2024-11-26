@@ -15,16 +15,16 @@ import { RealtimePresenceState } from "@supabase/realtime-js";
 
 export function LogSidebar({
   roomCode,
+  gameId,
   name,
   team,
 }: {
   roomCode: string;
+  gameId: number;
   name: string;
   team: string;
 }) {
-  const [logMessages, setLogMessages] = useState<
-    { key: string; message: string }[]
-  >([]);
+  const [logMessages, setLogMessages] = useState<string[]>([]);
   const [players, setPlayers] = useState<
     { name: string; team: string; presence_ref: string }[]
   >([]);
@@ -42,22 +42,31 @@ export function LogSidebar({
         console.log("join", key, newPresences);
         setLogMessages((messages) => [
           ...messages,
-          {
-            key: newPresences[0].presence_ref,
-            message: `${newPresences[0].name} joined the room`,
-          },
+          `${newPresences[0].name} joined the room`,
         ]);
       })
       .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
         console.log("leave", key, leftPresences);
         setLogMessages((messages) => [
           ...messages,
-          {
-            key: leftPresences[0].presence_ref,
-            message: `${leftPresences[0].name} left the room`,
-          },
+          `${leftPresences[0].name} left the room`,
         ]);
       })
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "tile",
+          filter: `game_id=eq.${gameId}`,
+        },
+        (payload) => {
+          setLogMessages((messages) => [
+            ...messages,
+            `Tile ${payload.new.id} flipped`,
+          ]);
+        }
+      )
       .subscribe(async (status) => {
         if (status !== "SUBSCRIBED") {
           return;
@@ -74,7 +83,7 @@ export function LogSidebar({
       channel.untrack();
       channel.unsubscribe();
     };
-  }, [supabase, roomCode, name, team]);
+  }, [supabase, roomCode, name, team, gameId]);
   return (
     <Sidebar
       collapsible="none"
@@ -95,7 +104,7 @@ export function LogSidebar({
           <SidebarGroupLabel>Log</SidebarGroupLabel>
           <SidebarMenu>
             {logMessages.map((message, i) => (
-              <SidebarMenuItem key={i}>{message.message}</SidebarMenuItem>
+              <SidebarMenuItem key={i}>{message}</SidebarMenuItem>
             ))}
           </SidebarMenu>
         </SidebarGroup>

@@ -110,6 +110,7 @@ export default async function Room({
       </SidebarInset>
       <LogSidebar
         roomCode={roomCode}
+        gameId={player?.room?.current_game?.id || 0}
         name={player?.name || "Player"}
         team={player?.team || "neutral"}
       />
