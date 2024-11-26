@@ -104,7 +104,7 @@ export function LogSidebar({
       channel.untrack();
       channel.unsubscribe();
     };
-  }, [supabase, roomCode, name, team, gameId]);
+  }, [supabase, roomCode, roomId, name, team, gameId]);
   return (
     <Sidebar
       collapsible="none"
