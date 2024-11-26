@@ -15,11 +15,13 @@ import { RealtimePresenceState } from "@supabase/realtime-js";
 
 export function LogSidebar({
   roomCode,
+  roomId,
   gameId,
   name,
   team,
 }: {
   roomCode: string;
+  roomId: number;
   gameId: number;
   name: string;
   team: string;
@@ -61,9 +63,28 @@ export function LogSidebar({
           filter: `game_id=eq.${gameId}`,
         },
         (payload) => {
+          console.log(payload);
           setLogMessages((messages) => [
             ...messages,
             `Tile ${payload.new.id} flipped`,
+          ]);
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "player",
+          filter: `current_room_id=eq.${roomId}`,
+        },
+        (payload) => {
+          console.log(payload);
+          setLogMessages((messages) => [
+            ...messages,
+            `${payload.new.name} became ${
+              payload.new.is_spymaster ? "spymaster" : "normal"
+            } on the ${payload.new.team} team`,
           ]);
         }
       )

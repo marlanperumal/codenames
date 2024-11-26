@@ -116,7 +116,7 @@ export function AppSidebar({
               <button onClick={toggleSpymasterHandler}>
                 <>
                   <Glasses />
-                  <span>Become Spymaster</span>
+                  <span>Become {isSpymaster ? "Normal" : "Spymaster"}</span>
                 </>
               </button>
             </SidebarMenuButton>
