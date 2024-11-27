@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
 import {
@@ -30,6 +31,7 @@ export function LogSidebar({
   const [players, setPlayers] = useState<
     { name: string; team: string; presence_ref: string }[]
   >([]);
+  const router = useRouter();
   const supabase = createClient();
   useEffect(() => {
     const channel = supabase.channel(roomCode);
@@ -68,6 +70,7 @@ export function LogSidebar({
             ...messages,
             `Tile ${payload.new.id} flipped`,
           ]);
+          router.refresh();
         }
       )
       .on(
@@ -104,7 +107,7 @@ export function LogSidebar({
       channel.untrack();
       channel.unsubscribe();
     };
-  }, [supabase, roomCode, roomId, name, team, gameId]);
+  }, [supabase, roomCode, roomId, name, team, gameId, router]);
   return (
     <Sidebar
       collapsible="none"

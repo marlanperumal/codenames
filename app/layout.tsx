@@ -1,7 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { createClient } from "@/utils/supabase/server";
 import { ThemeProvider } from "@/components/theme-provider";
-import { UserContextProvider } from "../components/user-context";
+import { PlayerContextProvider } from "../components/player-context";
 
 export const metadata: Metadata = {
   title: "Codenames",
@@ -9,11 +10,40 @@ export const metadata: Metadata = {
     "An implementation of the popular boardgame Codenames using Next.js, Supabase Realtime, Shadcn, Tailwind, Typescript and Vercel",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    await supabase.auth.signInAnonymously();
+    return;
+  }
+
+  const { data: player } = await supabase
+    .from("player")
+    .select(
+      `id, name, current_room_id, team, is_spymaster, room (
+            id, code, current_game:game!room_current_game_id_fkey (
+              id, code, is_complete, tiles:tile (
+                id, position, team, is_selected, word (
+                  word 
+                ) 
+              )
+            )
+          )`
+    )
+    .eq("id", user?.id)
+    .single();
+
+  if (!player) {
+    return;
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={"antialiased"}>
@@ -23,9 +53,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <UserContextProvider>
+          <PlayerContextProvider initialPlayer={player}>
             <main>{children}</main>
-          </UserContextProvider>
+          </PlayerContextProvider>
         </ThemeProvider>
       </body>
     </html>

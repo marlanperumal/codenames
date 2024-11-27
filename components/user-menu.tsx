@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useOptimistic } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "./ui/form";
 import { changeName } from "@/app/actions";
+import { usePlayerContext } from "./player-context";
 
 const changeNameSchema = z.object({
   name: z.string().min(2, {
@@ -36,22 +37,22 @@ const changeNameSchema = z.object({
   }),
 });
 
-export function UserMenu({ name }: { name: string }) {
+export function UserMenu() {
+  const { player, setPlayer } = usePlayerContext();
   const form = useForm<z.infer<typeof changeNameSchema>>({
     resolver: zodResolver(changeNameSchema),
     defaultValues: {
-      name: name || "",
+      name: player?.name || "",
     },
   });
   const [open, setOpen] = useState(false);
-  const [optimisticName, setOptimisticName] = useOptimistic(name);
 
   const changeNameHandler = async () => {
     const name = form.getValues("name");
     console.log(name);
-    setOptimisticName(name);
-    await changeName(name);
+    setPlayer({ ...player, name });
     setOpen(false);
+    await changeName(name);
   };
   return (
     <SidebarMenu>
@@ -60,7 +61,7 @@ export function UserMenu({ name }: { name: string }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton>
-                <User /> {optimisticName || "Player"}
+                <User /> {player.name}
                 <ChevronUp className="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
@@ -95,7 +96,7 @@ export function UserMenu({ name }: { name: string }) {
                           <Input
                             {...field}
                             type="text"
-                            placeholder={optimisticName}
+                            placeholder={player.name}
                           />
                         </FormControl>
                       </FormItem>

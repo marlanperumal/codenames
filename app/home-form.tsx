@@ -47,9 +47,13 @@ export function HomeForm({
     },
   });
 
+  const launchFromHomeAction = async (formData: FormData) => {
+    await launchFromHome(formData);
+  };
+
   return (
     <Form {...form}>
-      <form action={launchFromHome} className="space-y-8">
+      <form action={launchFromHomeAction} className="space-y-8">
         <FormField
           control={form.control}
           name="name"
