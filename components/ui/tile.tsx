@@ -23,12 +23,6 @@ const spyMasterTileColorVariants = {
   death: "bg-tile-death-background text-tile-death-foreground",
 };
 
-const teamColorVariants = {
-  red: "bg-gameBoard-red-background",
-  blue: "bg-gameBoard-blue-background",
-  neutral: "bg-gameBoard-neutral-background",
-};
-
 export type WordVariant = "blue" | "red" | "unknown" | "neutral" | "death";
 export type TeamVariant = "blue" | "red" | "neutral";
 
@@ -67,7 +61,7 @@ const Tile = React.forwardRef<
         <button
           ref={ref}
           className={cn(
-            `flex w-full items-center justify-center rounded-xl p-1 lg:p-4 border-4 shadow-md uppercase cursor-pointer transition-all ease-in-out duration-500 text-xs lg:text-lg ${
+            `flex w-full items-center justify-center rounded-xl p-1 lg:p-4 border-2 lg:border-4 shadow-md uppercase cursor-pointer transition-all ease-in-out duration-500 hover:scale-105 font-normal lg:font-semibold tracking-wide text-xs lg:text-md ${
               isComplete
                 ? spyMasterTileColorVariants[variant]
                 : optimisticSelected
@@ -82,7 +76,7 @@ const Tile = React.forwardRef<
             } `,
             className
           )}
-          disabled={optimisticSelected}
+          disabled={optimisticSelected || isSpymaster || isComplete}
           aria-label={word}
           {...props}
         >
@@ -96,14 +90,12 @@ Tile.displayName = "Tile";
 
 const TileBoard = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<"div"> & {
-    team: TeamVariant;
-  }
->(({ className, team = "neutral", ...props }, ref) => (
+  React.ComponentProps<"div"> & {}
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
-      `grid grid-cols-5 gap-1 lg:gap-4 p-1 lg:p-4 flex-grow ${teamColorVariants[team]}`,
+      `grid grid-cols-5 flex-grow gap-1 lg:gap-4 p-1 lg:p-4`,
       className
     )}
     {...props}

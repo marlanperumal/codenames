@@ -53,13 +53,11 @@ const TeamButton = React.forwardRef<
 TeamButton.displayName = "TeamButton";
 
 export function AppSidebar({
-  name,
   isSpymaster,
   tileCounts,
   gameId,
   roomCode,
 }: {
-  name: string;
   isSpymaster: boolean;
   tileCounts: Record<string, number>;
   gameId: number;
@@ -132,7 +130,7 @@ export function AppSidebar({
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center justify-stretch">
-          <UserMenu name={name} />
+          <UserMenu />
           <div className="flex items-center justify-end ml-2">
             <ThemeSelector />
           </div>

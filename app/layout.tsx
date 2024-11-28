@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PlayerContextProvider } from "../components/player-context";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
 export const metadata: Metadata = {
   title: "Codenames",
@@ -45,7 +47,11 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+    >
       <body className={"antialiased"}>
         <ThemeProvider
           attribute="class"

@@ -78,6 +78,34 @@ export function LogSidebar({
         {
           event: "UPDATE",
           schema: "public",
+          table: "game",
+          filter: `id=eq.${gameId}`,
+        },
+        (payload) => {
+          console.log(payload);
+          setLogMessages((messages) => [...messages, `Game completed`]);
+          router.refresh();
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "room",
+          filter: `id=eq.${roomId}`,
+        },
+        (payload) => {
+          console.log(payload);
+          setLogMessages((messages) => [...messages, `New game started`]);
+          router.refresh();
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
           table: "player",
           filter: `current_room_id=eq.${roomId}`,
         },
@@ -111,6 +139,7 @@ export function LogSidebar({
   return (
     <Sidebar
       collapsible="none"
+      side="right"
       className="sticky hidden lg:flex top-0 h-svh border-l"
     >
       <SidebarContent>

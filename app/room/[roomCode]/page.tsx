@@ -3,15 +3,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { GameBoard } from "@/components/game-board";
 import { AppSidebar } from "@/components/app-sidebar";
 import { createClient } from "@/utils/supabase/server";
@@ -69,37 +60,20 @@ export default async function Room({
   return (
     <SidebarProvider>
       <AppSidebar
-        name={player?.name || "Player"}
         isSpymaster={player?.is_spymaster || false}
         tileCounts={tileCounts}
         gameId={player?.room?.current_game?.id || 0}
         roomCode={roomCode}
       />
       <SidebarInset>
-        <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="flex sticky top-0 bg-tile-neutral-background text-tile-neutral-foreground h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/">Room</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbPage>{roomCode}</BreadcrumbPage>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block">
-                |
-              </BreadcrumbSeparator>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/">Game</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {player?.room?.current_game?.code}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          {/* <Separator orientation="vertical" className="my-4 hidden md:block" /> */}
+          <h2 className="hidden md:block text-yellow-800">Room</h2>
+          <span>{roomCode}</span>
+          {/* <Separator orientation="vertical" className="hidden md:block" /> */}
+          <h2 className="hidden md:block text-yellow-800">Game</h2>
+          <span>{player?.room?.current_game?.code}</span>
         </header>
         <GameBoard
           tiles={orderedTiles}
