@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { Home, CirclePlus, CircleCheck, Glasses } from "lucide-react";
+import { Home, CirclePlus, CircleCheck, Glasses, Search } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -113,7 +113,7 @@ export function AppSidebar({
             <SidebarMenuButton asChild>
               <button onClick={toggleSpymasterHandler}>
                 <>
-                  <Glasses />
+                  {isSpymaster ? <Search /> : <Glasses />}
                   <span>Become {isSpymaster ? "Normal" : "Spymaster"}</span>
                 </>
               </button>

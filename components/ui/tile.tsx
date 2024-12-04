@@ -61,7 +61,7 @@ const Tile = React.forwardRef<
         <button
           ref={ref}
           className={cn(
-            `flex w-full items-center justify-center rounded-xl p-1 lg:p-4 border-2 lg:border-4 shadow-md uppercase cursor-pointer transition-all ease-in-out duration-500 hover:scale-105 font-normal lg:font-semibold tracking-wide text-xs lg:text-md ${
+            `flex w-full items-center justify-center rounded-xl p-1 lg:p-4 border-2 lg:border-4 shadow-md uppercase cursor-pointer transition-all ease-in-out duration-500 hover:scale-105 font-normal lg:font-semibold tracking-wide text-xs lg:text-lg ${
               isComplete
                 ? spyMasterTileColorVariants[variant]
                 : optimisticSelected

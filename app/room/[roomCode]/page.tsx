@@ -1,13 +1,10 @@
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { GameBoard } from "@/components/game-board";
 import { AppSidebar } from "@/components/app-sidebar";
 import { createClient } from "@/utils/supabase/server";
 import { TeamVariant } from "@/components/ui/tile";
 import { LogSidebar } from "@/components/log-sidebar";
+import { AppTopbar } from "@/components/app-topbar";
 
 export default async function Room({
   params,
@@ -66,15 +63,11 @@ export default async function Room({
         roomCode={roomCode}
       />
       <SidebarInset>
-        <header className="flex sticky top-0 bg-tile-neutral-background text-tile-neutral-foreground h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          {/* <Separator orientation="vertical" className="my-4 hidden md:block" /> */}
-          <h2 className="hidden md:block text-yellow-800">Room</h2>
-          <span>{roomCode}</span>
-          {/* <Separator orientation="vertical" className="hidden md:block" /> */}
-          <h2 className="hidden md:block text-yellow-800">Game</h2>
-          <span>{player?.room?.current_game?.code}</span>
-        </header>
+        <AppTopbar
+          roomCode={roomCode}
+          gameCode={player?.room?.current_game?.code || ""}
+          team={(player?.team as "neutral" | "red" | "blue") || "neutral"}
+        />
         <GameBoard
           tiles={orderedTiles}
           team={(player?.team as TeamVariant) || "neutral"}
@@ -87,7 +80,8 @@ export default async function Room({
         roomId={player?.room?.id || 0}
         gameId={player?.room?.current_game?.id || 0}
         name={player?.name || "Player"}
-        team={player?.team || "neutral"}
+        team={(player?.team as "red" | "blue" | "neutral") || "neutral"}
+        isSpymaster={player?.is_spymaster || false}
       />
     </SidebarProvider>
   );

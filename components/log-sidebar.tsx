@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { RealtimePresenceState } from "@supabase/realtime-js";
+import { Search, Glasses } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
 import {
@@ -12,7 +14,33 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { RealtimePresenceState } from "@supabase/realtime-js";
+
+function PlayerList({
+  players,
+}: {
+  players: {
+    name: string;
+    team: string;
+    isSpymaster: boolean;
+    presence_ref: string;
+  }[];
+}) {
+  return (
+    <div className="flex-1 flex-col gap-1">
+      {players.map((player) => (
+        <SidebarMenuItem
+          className={`bg-tile-${player.team}-background text-tile-${player.team}-foreground pl-2 flex-1 rounded-sm mb-1`}
+          key={player.presence_ref}
+        >
+          <div className="flex items-center justify-center text-center text-sm gap-1">
+            {player.isSpymaster ? <Glasses size={16} /> : <Search size={16} />}
+            <span>{player.name}</span>
+          </div>
+        </SidebarMenuItem>
+      ))}
+    </div>
+  );
+}
 
 export function LogSidebar({
   roomCode,
@@ -20,16 +48,18 @@ export function LogSidebar({
   gameId,
   name,
   team,
+  isSpymaster,
 }: {
   roomCode: string;
   roomId: number;
   gameId: number;
   name: string;
   team: string;
+  isSpymaster: boolean;
 }) {
   const [logMessages, setLogMessages] = useState<string[]>([]);
   const [players, setPlayers] = useState<
-    { name: string; team: string; presence_ref: string }[]
+    { name: string; team: string; isSpymaster: boolean; presence_ref: string }[]
   >([]);
   const router = useRouter();
   const supabase = createClient();
@@ -37,25 +67,28 @@ export function LogSidebar({
     const channel = supabase.channel(roomCode);
     channel
       .on("presence", { event: "sync" }, () => {
-        const newState: RealtimePresenceState<{ name: string; team: string }> =
-          channel.presenceState();
+        const newState: RealtimePresenceState<{
+          name: string;
+          team: string;
+          isSpymaster: boolean;
+        }> = channel.presenceState();
         console.log("sync", newState);
         setPlayers(Object.entries(newState).map(([, value]) => value[0]));
       })
-      .on("presence", { event: "join" }, ({ key, newPresences }) => {
-        console.log("join", key, newPresences);
-        setLogMessages((messages) => [
-          ...messages,
-          `${newPresences[0].name} joined the room`,
-        ]);
-      })
-      .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
-        console.log("leave", key, leftPresences);
-        setLogMessages((messages) => [
-          ...messages,
-          `${leftPresences[0].name} left the room`,
-        ]);
-      })
+      // .on("presence", { event: "join" }, ({ key, newPresences }) => {
+      //   console.log("join", key, newPresences);
+      //   setLogMessages((messages) => [
+      //     ...messages,
+      //     `${newPresences[0].name} joined the room`,
+      //   ]);
+      // })
+      // .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
+      //   console.log("leave", key, leftPresences);
+      //   setLogMessages((messages) => [
+      //     ...messages,
+      //     `${leftPresences[0].name} left the room`,
+      //   ]);
+      // })
       .on(
         "postgres_changes",
         {
@@ -127,6 +160,7 @@ export function LogSidebar({
         const presenceTrackStatus = await channel.track({
           name,
           team,
+          isSpymaster,
         });
         console.log(presenceTrackStatus);
       });
@@ -135,29 +169,37 @@ export function LogSidebar({
       channel.untrack();
       channel.unsubscribe();
     };
-  }, [supabase, roomCode, roomId, name, team, gameId, router]);
+  }, [supabase, roomCode, roomId, name, team, isSpymaster, gameId, router]);
   return (
     <Sidebar
       collapsible="none"
       side="right"
-      className="sticky hidden lg:flex top-0 h-svh border-l"
+      className="sticky hidden xl:flex top-0 h-svh border-l xl:w-[360px] overflow-hidden"
     >
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Teams</SidebarGroupLabel>
+          <SidebarGroupLabel>Players</SidebarGroupLabel>
           <SidebarMenu>
-            {players.map((player) => (
-              <SidebarMenuItem key={player.presence_ref}>
-                {player.name} {player.team}
-              </SidebarMenuItem>
-            ))}
+            <div className="flex gap-1">
+              <PlayerList
+                players={players.filter((player) => player.team === "red")}
+              />
+              <PlayerList
+                players={players.filter((player) => player.team === "blue")}
+              />
+            </div>
+            <PlayerList
+              players={players.filter((player) => player.team === "neutral")}
+            />
           </SidebarMenu>
         </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>Log</SidebarGroupLabel>
-          <SidebarMenu>
-            {logMessages.map((message, i) => (
-              <SidebarMenuItem key={i}>{message}</SidebarMenuItem>
+          <SidebarMenu className="overflow-auto max-h-[600px]">
+            {logMessages.toReversed().map((message, i) => (
+              <SidebarMenuItem key={i} className="text-sm">
+                {message}
+              </SidebarMenuItem>
             ))}
           </SidebarMenu>
         </SidebarGroup>
