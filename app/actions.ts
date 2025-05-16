@@ -42,8 +42,7 @@ export async function launchFromHome(formData: FormData) {
 
   const { name, roomCode } = validatedFormData.data;
 
-  const newRoomCode =
-    roomCode?.toUpperCase() ||
+  const newRoomCode = roomCode?.toUpperCase() ||
     Math.random().toString(36).substring(2, 8).toUpperCase();
 
   let { data: room } = await supabase
@@ -73,16 +72,20 @@ export async function launchFromHome(formData: FormData) {
 
 export const flipTile = async (tileId: number) => {
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   await supabase
     .from("tile")
     .update({
       is_selected: true,
+      selected_by_user_id: user?.id,
     })
-    .eq("id", tileId)
+    .eq("id", tileId);
 
-  revalidatePath(`/room/[roomCode]`, 'page');
-}
+  revalidatePath(`/room/[roomCode]`, "page");
+};
 
 export const changeTeam = async (team: string) => {
   const supabase = await createClient();
@@ -102,8 +105,8 @@ export const changeTeam = async (team: string) => {
     })
     .eq("id", user.id);
 
-  revalidatePath(`/room/[roomCode]`, 'page');
-}
+  revalidatePath(`/room/[roomCode]`, "page");
+};
 
 export const toggleSpymaster = async (isSpymaster: boolean) => {
   const supabase = await createClient();
@@ -123,8 +126,8 @@ export const toggleSpymaster = async (isSpymaster: boolean) => {
     })
     .eq("id", user.id);
 
-  revalidatePath(`/room/[roomCode]`, 'page');
-}
+  revalidatePath(`/room/[roomCode]`, "page");
+};
 
 export const changeName = async (name: string) => {
   const supabase = await createClient();
@@ -144,8 +147,8 @@ export const changeName = async (name: string) => {
     })
     .eq("id", user.id);
 
-  revalidatePath(`/room/[roomCode]`, 'page');
-}
+  revalidatePath(`/room/[roomCode]`, "page");
+};
 
 export const completeGame = async (gameId: number) => {
   const supabase = await createClient();
@@ -157,25 +160,33 @@ export const completeGame = async (gameId: number) => {
     })
     .eq("id", gameId);
 
-  revalidatePath(`/room/[roomCode]`, 'page');
-}
+  revalidatePath(`/room/[roomCode]`, "page");
+};
 
 export const newGame = async (roomCode: string) => {
   const supabase = await createClient();
 
-  const { data: room } = await supabase.from("room").select().eq("code", roomCode).single();
+  const { data: room } = await supabase.from("room").select().eq(
+    "code",
+    roomCode,
+  ).single();
 
   if (!room) {
     redirect("/");
   }
 
-  const { data: game } = await supabase.from("game").insert({room_id: room.id}).select().single();
+  const { data: game } = await supabase.from("game").insert({
+    room_id: room.id,
+  }).select().single();
 
   if (!game) {
     redirect("/");
   }
 
-  await supabase.from("room").update({current_game_id: game.id}).eq("id", room.id);
+  await supabase.from("room").update({ current_game_id: game.id }).eq(
+    "id",
+    room.id,
+  );
 
-  revalidatePath(`/room/[roomCode]`, 'page');
-}
+  revalidatePath(`/room/[roomCode]`, "page");
+};
