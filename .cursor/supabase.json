@@ -1,0 +1,43 @@
+{
+  "name": "Supabase Rules",
+  "description": "Rules for Supabase integration in Codenames project",
+  "rules": {
+    "database": {
+      "description": "Database schema and query conventions",
+      "patterns": ["supabase/migrations/**/*.sql", "**/*.ts"],
+      "conventions": {
+        "naming": "Use snake_case for table and column names",
+        "indexes": "Create indexes for frequently queried columns",
+        "foreign_keys": "Always define foreign key constraints",
+        "timestamps": "Include created_at and updated_at columns"
+      }
+    },
+    "realtime": {
+      "description": "Real-time functionality guidelines",
+      "patterns": ["**/*.ts", "**/*.tsx"],
+      "conventions": {
+        "subscriptions": "Clean up subscriptions on component unmount",
+        "channels": "Use meaningful channel names",
+        "events": "Handle all possible real-time events"
+      }
+    },
+    "auth": {
+      "description": "Authentication and authorization patterns",
+      "patterns": ["**/*.ts", "**/*.tsx"],
+      "conventions": {
+        "middleware": "Use Supabase middleware for protected routes",
+        "session": "Handle session state properly",
+        "permissions": "Define RLS policies for all tables"
+      }
+    },
+    "types": {
+      "description": "Type safety for Supabase",
+      "patterns": ["utils/supabase/**/*.ts"],
+      "conventions": {
+        "generation": "Keep database types up to date using supabase-gen-types",
+        "usage": "Use generated types for all database operations",
+        "extensions": "Extend generated types when needed"
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Next.js Rules",
+  "description": "Rules for Next.js development in Codenames project",
+  "rules": {
+    "app_directory": {
+      "description": "Use the App Router directory structure",
+      "patterns": ["app/**/*.tsx", "app/**/*.ts"],
+      "conventions": {
+        "page_files": "Use page.tsx for route pages",
+        "layout_files": "Use layout.tsx for shared layouts",
+        "loading_files": "Use loading.tsx for loading states",
+        "error_files": "Use error.tsx for error handling"
+      }
+    },
+    "server_components": {
+      "description": "Prefer Server Components by default",
+      "patterns": ["app/**/*.tsx"],
+      "conventions": {
+        "default": "Use Server Components unless client-side interactivity is needed",
+        "client_components": "Mark client components with 'use client' directive"
+      }
+    },
+    "routing": {
+      "description": "Follow Next.js routing conventions",
+      "patterns": ["app/**/*"],
+      "conventions": {
+        "dynamic_routes": "Use [param] for dynamic routes",
+        "catch_all": "Use [...param] for catch-all routes",
+        "optional_catch_all": "Use [[...param]] for optional catch-all routes"
+      }
+    },
+    "data_fetching": {
+      "description": "Use appropriate data fetching methods",
+      "patterns": ["app/**/*.tsx"],
+      "conventions": {
+        "server_components": "Use async/await for data fetching in Server Components",
+        "client_components": "Use SWR or React Query for client-side data fetching"
+      }
+    }
+  }
+}

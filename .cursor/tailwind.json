@@ -1,0 +1,46 @@
+{
+  "name": "Tailwind CSS and Shadcn UI Rules",
+  "description": "Rules for styling and UI components in Codenames project",
+  "rules": {
+    "tailwind": {
+      "description": "Follow Tailwind CSS best practices",
+      "patterns": ["**/*.tsx", "**/*.css"],
+      "conventions": {
+        "class_ordering": "Order classes: layout, spacing, sizing, typography, visual, interactive",
+        "custom_classes": "Use @apply for repeated class combinations",
+        "responsive": "Use mobile-first responsive design with breakpoint prefixes",
+        "dark_mode": "Use dark: prefix for dark mode styles"
+      }
+    },
+    "shadcn": {
+      "description": "Follow Shadcn UI component patterns",
+      "patterns": ["components/ui/**/*.tsx"],
+      "conventions": {
+        "component_structure": "Follow Shadcn UI component structure with variants and styles",
+        "naming": "Use kebab-case for component files (e.g., button.tsx)",
+        "props": "Use Radix UI primitive props as base",
+        "styling": "Use Tailwind CSS for component styling"
+      }
+    },
+    "theming": {
+      "description": "Consistent theming across the application",
+      "patterns": ["**/*.tsx", "tailwind.config.ts"],
+      "conventions": {
+        "colors": "Use theme colors from tailwind.config.ts",
+        "spacing": "Use consistent spacing scale",
+        "typography": "Use consistent font sizes and weights",
+        "animations": "Use consistent animation durations and curves"
+      }
+    },
+    "accessibility": {
+      "description": "Ensure accessible UI components",
+      "patterns": ["components/**/*.tsx"],
+      "conventions": {
+        "semantic_html": "Use semantic HTML elements",
+        "aria_labels": "Include appropriate ARIA labels",
+        "keyboard_nav": "Ensure keyboard navigation support",
+        "color_contrast": "Maintain WCAG color contrast ratios"
+      }
+    }
+  }
+}
