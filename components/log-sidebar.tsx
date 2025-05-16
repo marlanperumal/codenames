@@ -75,20 +75,20 @@ export function LogSidebar({
         console.log("sync", newState);
         setPlayers(Object.entries(newState).map(([, value]) => value[0]));
       })
-      // .on("presence", { event: "join" }, ({ key, newPresences }) => {
-      //   console.log("join", key, newPresences);
-      //   setLogMessages((messages) => [
-      //     ...messages,
-      //     `${newPresences[0].name} joined the room`,
-      //   ]);
-      // })
-      // .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
-      //   console.log("leave", key, leftPresences);
-      //   setLogMessages((messages) => [
-      //     ...messages,
-      //     `${leftPresences[0].name} left the room`,
-      //   ]);
-      // })
+      .on("presence", { event: "join" }, ({ key, newPresences }) => {
+        console.log("join", key, newPresences);
+        setLogMessages((messages) => [
+          ...messages,
+          `${newPresences[0].name} joined the room`,
+        ]);
+      })
+      .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
+        console.log("leave", key, leftPresences);
+        setLogMessages((messages) => [
+          ...messages,
+          `${leftPresences[0].name} left the room`,
+        ]);
+      })
       .on(
         "postgres_changes",
         {
@@ -97,11 +97,21 @@ export function LogSidebar({
           table: "tile",
           filter: `game_id=eq.${gameId}`,
         },
-        (payload) => {
+        async (payload) => {
           console.log(payload);
+          const { data: player } = await supabase
+            .from("player")
+            .select("name")
+            .eq("id", payload.new.selected_by_user_id)
+            .single();
+          const { data: word } = await supabase
+            .from("word")
+            .select("word")
+            .eq("id", payload.new.word_id)
+            .single();
           setLogMessages((messages) => [
             ...messages,
-            `Tile ${payload.new.id} flipped`,
+            `${player?.name} selected ${word?.word} and it was ${payload.new.team}`,
           ]);
           router.refresh();
         }

@@ -1,0 +1,43 @@
+{
+  "name": "TypeScript Rules",
+  "description": "Rules for TypeScript development in Codenames project",
+  "rules": {
+    "type_safety": {
+      "description": "Maintain strict type safety",
+      "patterns": ["**/*.ts", "**/*.tsx"],
+      "conventions": {
+        "no_any": "Avoid using 'any' type",
+        "explicit_returns": "Always specify return types for functions",
+        "interface_over_type": "Prefer interfaces over type aliases for object definitions",
+        "strict_null_checks": "Enable strict null checks"
+      }
+    },
+    "naming": {
+      "description": "Follow TypeScript naming conventions",
+      "patterns": ["**/*.ts", "**/*.tsx"],
+      "conventions": {
+        "interfaces": "Use PascalCase for interfaces (e.g., IGameState)",
+        "types": "Use PascalCase for type aliases (e.g., GameConfig)",
+        "enums": "Use PascalCase for enums (e.g., GameStatus)",
+        "generics": "Use PascalCase for generic type parameters (e.g., T)"
+      }
+    },
+    "imports": {
+      "description": "Organize imports properly",
+      "patterns": ["**/*.ts", "**/*.tsx"],
+      "conventions": {
+        "order": "Group imports: React/Next.js, external libraries, internal modules, types",
+        "type_imports": "Use type imports for types (import type { Props } from './types')"
+      }
+    },
+    "error_handling": {
+      "description": "Proper error handling with TypeScript",
+      "patterns": ["**/*.ts", "**/*.tsx"],
+      "conventions": {
+        "custom_errors": "Create custom error classes extending Error",
+        "error_types": "Define specific error types for different error cases",
+        "try_catch": "Use type guards in catch blocks"
+      }
+    }
+  }
+}

@@ -47,6 +47,23 @@ enabled = true
 # sql_paths = ['./seeds/*.sql', '../project-src/seeds/*-load-testing.sql']
 sql_paths = ['./seed.sql']
 
+[db.migrations]
+schema_paths = [
+    './schemas/settings.sql',
+    './schemas/extensions.sql',
+    './schemas/auth.sql',
+    './schemas/tables/word.sql',
+    './schemas/tables/room.sql',
+    './schemas/tables/player.sql',
+    './schemas/tables/game.sql',
+    './schemas/tables/tile.sql',
+    './schemas/functions.sql',
+    './schemas/triggers.sql',
+    './schemas/policies.sql',
+    './schemas/publications.sql',
+    './schemas/*.sql',
+]
+
 [realtime]
 enabled = true
 # Bind realtime via either IPv4 or IPv6. (default: IPv4)
