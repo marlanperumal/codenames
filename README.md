@@ -28,6 +28,50 @@ A modern web implementation of the popular word association board game Codenames
 - Node.js (Latest LTS version recommended)
 - pnpm package manager
 - Supabase account and project
+- Docker and Docker Compose (for local Supabase development)
+
+### Local Supabase Setup
+
+1. Install the Supabase CLI:
+```bash
+# Using npm
+npm install -g supabase
+
+# Or using Homebrew (macOS)
+brew install supabase/tap/supabase
+```
+
+2. Start the local Supabase development environment:
+```bash
+supabase start
+```
+
+This will:
+- Start a local Supabase instance using Docker
+- Create a local database with the schema defined in `supabase/schemas/`
+- Set up local API endpoints and authentication
+- Generate local API credentials
+
+3. Update your `.env.local` file to use local Supabase credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+```
+
+4. To stop the local Supabase instance:
+```bash
+supabase stop
+```
+
+5. To reset the local database:
+```bash
+supabase db reset
+```
+
+6. To view the local Supabase dashboard:
+```bash
+supabase dashboard
+```
 
 ### Installation
 
